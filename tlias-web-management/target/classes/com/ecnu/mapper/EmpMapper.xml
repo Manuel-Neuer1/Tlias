@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecnu.mapper.EmpMapper">
+    <select id="list2" resultType="com.ecnu.pojo.Emp">
+        select e.*,d.name from emp e left join dept d on e.dept_id = d.id
+        <where> <!-- where标签，根据查询条件来判断是否生成where关键字，并且会自动去除条件前面多余的and 或者 or -->
+            <if test="name != null and name != ''">
+                e.name like concat('%', #{name}, '%')
+            </if>
+            <if test="gender != null">
+                and e.gender = #{gender}
+            </if>
+            <if test="begin != null and end != null">
+                and e.entry_date between #{begin} and #{end}
+            </if>
+        </where>
+                order by e.update_time desc
+    </select>
+
+    <delete id="deleteByIds">
+        delete from emp where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <resultMap id="empResultMap" type="com.ecnu.pojo.Emp">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="name" property="name" />
+        <result column="gender" property="gender" />
+        <result column="phone" property="phone" />
+        <result column="job" property="job" />
+        <result column="salary" property="salary" />
+        <result column="image" property="image" />
+        <result column="entry_date" property="entryDate" />
+        <result column="dept_id" property="deptId" />
+        <result column="create_time" property="createDate" />
+        <result column="update_time" property="updateDate" />
+
+        <collection property="exprList" ofType="com.ecnu.pojo.EmpExpr">
+            <id column="ee_id" property="id"/>
+            <result column="ee_company" property="company"/>
+            <result column="ee_job" property="job"/>
+            <result column="ee_begin" property="begin"/>
+            <result column="ee_end" property="end"/>
+            <result column="ee_empid" property="empId"/>
+        </collection>
+    </resultMap>
+
+    <select id="getById" resultMap="empResultMap">
+        select e.*,
+               ee.id ee_id,
+               ee.begin ee_begin,
+               ee.end ee_end,
+               ee.company ee_company,
+               ee.job ee_job
+        from emp e left join emp_expr ee on e.id = ee.emp_id where e.id = #{id};
+    </select>
+</mapper>

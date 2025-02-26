@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecnu.mapper.EmpExprMapper">
+
+    <insert id="insertBatch">
+        insert into emp_expr (emp_id, begin, end,company, job) values
+        <foreach collection="exprList" item="EmpExpr" separator=",">
+            /*foreach中标签的含义：*/
+            /*collection：指定集合*/
+            /*item：指定集合中遍历出来的元素*/
+            /*separator：指定集合元素之间的分隔符*/
+            /*open：指定集合元素的开始符*/
+            /*close：指定集合元素的结束符*/
+            /*index：指定集合元素的索引*/
+            (#{EmpExpr.empId}, #{EmpExpr.begin}, #{EmpExpr.end}, #{EmpExpr.company}, #{EmpExpr.job})
+        </foreach>
+    </insert>
+    <delete id="deleteByEmpIds">
+        delete from emp_expr where emp_id in
+        <foreach collection="empIds" item="empId" open="(" separator="," close=")">
+            #{empId}
+        </foreach>
+    </delete>
+</mapper>
