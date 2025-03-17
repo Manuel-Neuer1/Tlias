@@ -2,11 +2,13 @@ package com.ecnu.mapper;
 
 import com.ecnu.pojo.Emp;
 import com.ecnu.pojo.EmpQueryParam;
+import com.ecnu.pojo.LoginInfo;
 import com.ecnu.pojo.PageResult;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /*
  * @Mapper 注解表示这是一个 MyBatis 的 Mapper 接口，
@@ -51,4 +53,18 @@ public interface EmpMapper {
     Emp getById(Integer id);
 
     void updateById(Emp emp);
+
+    /*
+    ** 统计员工职位人数
+     */
+    @MapKey("pos")
+    List<Map<String,Object>> countEmpJobData();
+
+    /**
+     * 统计员工性别人数
+     */
+    @MapKey("name")
+    List<Map<String, Object>> countEmpGenderData();
+
+    LoginInfo selectByUsernameAndPassword(Emp emp);
 }

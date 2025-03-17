@@ -2,6 +2,7 @@ package com.ecnu.service;
 
 import com.ecnu.pojo.Emp;
 import com.ecnu.pojo.EmpQueryParam;
+import com.ecnu.pojo.LoginInfo;
 import com.ecnu.pojo.PageResult;
 
 import java.time.LocalDate;
@@ -25,4 +26,6 @@ public interface EmpService {
     Emp getInfo(Integer id);
 
     void update(Emp emp);
+
+    LoginInfo login(Emp emp);
 }

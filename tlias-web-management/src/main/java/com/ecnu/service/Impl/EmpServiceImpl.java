@@ -7,6 +7,7 @@ import com.ecnu.service.EmpLogService;
 import com.ecnu.service.EmpService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-
+@Slf4j
 @Service // 注解表示这是一个 Spring 的 Service 类，
 public class EmpServiceImpl implements EmpService {
 
@@ -104,6 +105,7 @@ public class EmpServiceImpl implements EmpService {
         return emp;
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public void update(Emp emp) {
         // 1 根据ID修改员工的基本信息
@@ -120,5 +122,14 @@ public class EmpServiceImpl implements EmpService {
             }
             empExprMapper.insertBatch(emp.getId(), exprList);
         }
+    }
+
+    @Override
+    public LoginInfo login(Emp emp) {
+        LoginInfo loginInfo = empMapper.selectByUsernameAndPassword(emp);
+        if(loginInfo != null) {
+            log.info("登录成功，员工登录信息：{}", loginInfo);
+            return loginInfo;
+        }else return null;
     }
 }
