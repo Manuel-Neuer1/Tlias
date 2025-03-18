@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 @Slf4j
-@WebFilter(urlPatterns = "/*")
+//@WebFilter(urlPatterns = "/*")
 public class TokenFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -44,6 +44,7 @@ public class TokenFilter implements Filter {
         //6 如果token解析成功，放行
         log.info("token合法，放行");
         filterChain.doFilter(servletRequest, servletResponse);
+
         return;
     }
 }

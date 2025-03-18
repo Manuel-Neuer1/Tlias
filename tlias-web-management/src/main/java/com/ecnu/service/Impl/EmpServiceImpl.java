@@ -131,7 +131,7 @@ public class EmpServiceImpl implements EmpService {
     public LoginInfo login(Emp emp) {
         LoginInfo loginInfo = empMapper.selectByUsernameAndPassword(emp);
         if(loginInfo != null) {
-            log.info("登录成功，员工登录信息：{}", loginInfo);
+
             //生成JWT令牌
             Map<String, Object> claims = new HashMap<>();
             //令牌中存储id和username 确定是哪个登录用户
@@ -140,6 +140,7 @@ public class EmpServiceImpl implements EmpService {
 
             String jwtToken = JwtUtils.generateJwt(claims);
             loginInfo.setToken(jwtToken);
+            log.info("登录成功，员工登录信息：{}", loginInfo);
             return loginInfo;
         }
         else return null;
