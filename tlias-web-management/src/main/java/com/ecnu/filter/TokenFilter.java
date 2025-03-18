@@ -29,7 +29,7 @@ public class TokenFilter implements Filter {
         String token = httpServletRequest.getHeader("token");
         //4 判断token是否存在，如果不存在，返回错误结果（未登录401）
         if(token == null || token.isEmpty()){
-          log.info("请求头中无token，返回未登录结果401");
+          log.info("请求头中无token，返回未登录结果401状态码");
           httpServletResponse.setStatus(401);
           return;
         }
@@ -37,7 +37,7 @@ public class TokenFilter implements Filter {
         try{
             JwtUtils.parseJWT(token);
         } catch (Exception e){
-            log.info("请求头中token非法，返回未登录结果401");
+            log.info("请求头中token非法，返回未登录结果401状态码");
             httpServletResponse.setStatus(401);
             return;
         }
