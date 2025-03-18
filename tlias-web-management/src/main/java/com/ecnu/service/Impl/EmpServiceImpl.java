@@ -5,6 +5,7 @@ import com.ecnu.mapper.EmpMapper;
 import com.ecnu.pojo.*;
 import com.ecnu.service.EmpLogService;
 import com.ecnu.service.EmpService;
+import com.ecnu.utils.JwtUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service // 注解表示这是一个 Spring 的 Service 类，
@@ -129,7 +132,16 @@ public class EmpServiceImpl implements EmpService {
         LoginInfo loginInfo = empMapper.selectByUsernameAndPassword(emp);
         if(loginInfo != null) {
             log.info("登录成功，员工登录信息：{}", loginInfo);
+            //生成JWT令牌
+            Map<String, Object> claims = new HashMap<>();
+            //令牌中存储id和username 确定是哪个登录用户
+            claims.put("id", emp.getId());
+            claims.put("username", emp.getUsername());
+
+            String jwtToken = JwtUtils.generateJwt(claims);
+            loginInfo.setToken(jwtToken);
             return loginInfo;
-        }else return null;
+        }
+        else return null;
     }
 }

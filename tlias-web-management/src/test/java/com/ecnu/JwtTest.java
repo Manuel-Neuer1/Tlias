@@ -28,7 +28,9 @@ public class JwtTest {
         System.out.println(jwt);
     }
 
-
+    /*
+    * 解析令牌
+    * */
     @Test
     public void testParseJwt() {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQyMjE3NDIxfQ.aJo_1gJgrHaH9cuS-AWJtSgvdoQpPgnE7tSVkIx1OTA";
